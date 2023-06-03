@@ -6,6 +6,9 @@ import (
 	userDTO "myapp/src/user/dto"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+
+	_midl "myapp/pkg/middleware"
 )
 
 type UserHandler struct {
@@ -21,6 +24,7 @@ func NewUserHandler(e *echo.Echo, us user.UserUsecase, JWTSecret string) {
 
 	e.POST("/api/v1/register", handler.Register)
 	e.POST("/api/v1/login", handler.Login)
+	e.PUT("/api/v1/update", handler.Update, middleware.JWT([]byte(JWTSecret)))
 }
 
 func (u *UserHandler) Login(c echo.Context) error {
@@ -46,4 +50,18 @@ func (u *UserHandler) Register(c echo.Context) error {
 	}
 
 	return response.SuccessResponse(c, userResponse)
+}
+
+func (u *UserHandler) Update(c echo.Context) error {
+	user := userDTO.UserUpdateRequest{}
+	c.Bind(&user)
+
+	userID, _, _ := _midl.ExtractTokenUser(c)
+
+	userReponse, err := u.userUsecase.Update(user, uint(userID))
+	if err != nil {
+		return response.ErrorResponse(c, err)
+	}
+
+	return response.SuccessResponse(c, userReponse)
 }

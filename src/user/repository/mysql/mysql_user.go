@@ -29,9 +29,28 @@ func (ur *MysqlUserRepository) Save(user entity.User) (entity.User, error) {
 	return user, nil
 }
 
-func (ur *MysqlUserRepository) FindByUsernameOrEmail(username string, email string) (entity.User, error) {
+func (ur *MysqlUserRepository) FindByEmail(email string) (entity.User, error) {
 	var user entity.User
-	res := ur.db.Where("username = ? OR email = ?", username, email).First(&user)
+	res := ur.db.Where("email = ?", email).First(&user)
+	err := res.Error
+	if err != nil {
+		return entity.User{}, err
+	}
+	return user, nil
+}
+
+func (ur *MysqlUserRepository) FindById(id uint) (entity.User, error) {
+	var user entity.User
+	res := ur.db.Where("id = ?", id).First(&user)
+	err := res.Error
+	if err != nil {
+		return entity.User{}, err
+	}
+	return user, nil
+}
+
+func (ur *MysqlUserRepository) Update(user entity.User, id uint) (entity.User, error) {
+	res := ur.db.Model(&user).Where("id = ?", id).Updates(user)
 	err := res.Error
 	if err != nil {
 		return entity.User{}, err

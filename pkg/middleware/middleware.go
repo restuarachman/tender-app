@@ -22,7 +22,7 @@ func (m *GoMiddleware) CORS(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-func JWTCreateToken(userId int, username string, email string) (string, error) {
+func JWTCreateToken(userId int, email string, isVerified bool) (string, error) {
 	JWTSecret, err := config.LoadJWTSecret(".")
 	if err != nil {
 		log.Fatal("err", err)
@@ -31,24 +31,24 @@ func JWTCreateToken(userId int, username string, email string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["userId"] = userId
-	claims["username"] = username
 	claims["email"] = email
+	claims["isVerified"] = isVerified
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(JWTSecret.Secret))
 }
 
-func ExtractTokenUser(c echo.Context) (int, string, string) {
+func ExtractTokenUser(c echo.Context) (int, string, bool) {
 	user := c.Get("user").(*jwt.Token)
 	if user.Valid {
 		claims := user.Claims.(jwt.MapClaims)
 		userId := claims["userId"].(float64)
-		username := claims["username"].(string)
 		email := claims["email"].(string)
-		return int(userId), username, email
+		isVerified := claims["isVerified"].(bool)
+		return int(userId), email, isVerified
 	}
-	return 0, "", ""
+	return -1, "", false
 }
 
 // InitMiddleware initialize the middleware

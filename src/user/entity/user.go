@@ -6,17 +6,23 @@ import (
 	"gorm.io/gorm"
 )
 
+type Gender string
+
+const (
+	Male   Gender = "male"
+	Female Gender = "female"
+)
+
 type User struct {
 	gorm.Model
-	Username           string `gorm:"uniqueIndex;size:50"`
-	Password           string
-	Email              string `gorm:"uniqueIndex;size:50"`
-	Name               string
-	ProfileImageUrl    string
-	BackgroundImageUrl string
-	Bio                string
-	Profession         string
-	ValidEmail         bool `gorm:"default:false"`
-	CreatedAt          time.Time
-	UpdatedAt          time.Time
+	Nickname        string
+	Email           string `gorm:"uniqueIndex;size:50"`
+	Password        string
+	ProfileImageUrl string
+	Gender          Gender `gorm:"column:gender;type:varchar(20)"`
+	Popularity      int64  `gorm:"default:0"`
+	IsVerified      bool   `gorm:"default:false"`
+	Details         string
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 }
