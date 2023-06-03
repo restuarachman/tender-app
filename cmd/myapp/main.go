@@ -6,9 +6,13 @@ import (
 
 	_config "myapp/config"
 	_driver "myapp/src/driver"
-	_userHttpDelivery "myapp/src/user/delivery/http"
+	_userHandler "myapp/src/user/handler"
 	_userRepo "myapp/src/user/repository/mysql"
 	_userUsecase "myapp/src/user/usecase"
+
+	_interactionHandler "myapp/src/interaction/handler"
+	_interactionRepo "myapp/src/interaction/repository/mysql"
+	_interactionUsecase "myapp/src/interaction/usecase"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -35,19 +39,23 @@ func main() {
 	})
 	v := validator.New()
 
-	userRepo := _userRepo.NewMysqlUserRepository(_driver.DB)
-
-	// setup usecase
-	userUsecase := _userUsecase.NewUserUsecase(userRepo, v)
-
 	// setup middleware
 	JWTSecret, err := _config.LoadJWTSecret(".")
 	if err != nil {
 		log.Fatal("err", err)
 	}
 
+	// setup repository
+	userRepo := _userRepo.NewMysqlUserRepository(_driver.DB)
+	interactionRepo := _interactionRepo.NewMysqlInteractionRepository(_driver.DB)
+
+	// setup usecase
+	userUsecase := _userUsecase.NewUserUsecase(userRepo, v)
+	interactionUsecase := _interactionUsecase.NewInteractionUsecase(interactionRepo, userRepo, v)
+
 	// setup route
-	_userHttpDelivery.NewUserHandler(e, userUsecase, JWTSecret.Secret)
+	_userHandler.NewUserHandler(e, userUsecase, JWTSecret.Secret)
+	_interactionHandler.NewInteractionHandler(e, interactionUsecase, JWTSecret.Secret)
 
 	// setup middleware
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{

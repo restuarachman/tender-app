@@ -55,3 +55,18 @@ func ExtractTokenUser(c echo.Context) (int, string, bool) {
 func InitMiddleware() *GoMiddleware {
 	return &GoMiddleware{}
 }
+
+func PremiumMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		user := c.Get("user").(*jwt.Token)
+		if user.Valid {
+			claims := user.Claims.(jwt.MapClaims)
+			isVerified := claims["isVerified"].(bool)
+			if isVerified {
+				return next(c)
+			}
+
+		}
+		return echo.ErrUnauthorized
+	}
+}

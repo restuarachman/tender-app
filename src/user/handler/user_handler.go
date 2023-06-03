@@ -1,4 +1,4 @@
-package http
+package handler
 
 import (
 	"myapp/pkg/response"

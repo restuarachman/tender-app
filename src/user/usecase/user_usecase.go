@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"log"
 	"myapp/src/user"
 	userDTO "myapp/src/user/dto"
@@ -32,8 +31,7 @@ func (uu *userUsecase) Register(registerInfo userDTO.UserRegisterRequest) (userD
 		return userDTO.UserRegisterResponse{}, err
 	}
 
-	user, err := uu.userRepo.FindByEmail(registerInfo.Email)
-	fmt.Println(user)
+	_, err := uu.userRepo.FindByEmail(registerInfo.Email)
 	if err.Error() != "record not found" {
 		return userDTO.UserRegisterResponse{}, utils.ErrInternalServerError
 	}
