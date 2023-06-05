@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 
@@ -32,6 +33,7 @@ var (
 )
 
 func TestRegister(t *testing.T) {
+
 	mockUserRepo := mocks.NewUserRepository(t)
 
 	registerInfo := dto.UserRegisterRequest{
@@ -44,11 +46,20 @@ func TestRegister(t *testing.T) {
 		Details:              "test",
 	}
 
+	userEntity2 := entity.User{
+		Nickname:        registerInfo.Nickname,
+		Email:           registerInfo.Email,
+		Password:        "test123",
+		ProfileImageUrl: registerInfo.ProfileImageUrl,
+		Gender:          entity.Gender(registerInfo.Gender),
+		Details:         registerInfo.Details,
+	}
+
 	t.Run("success", func(t *testing.T) {
 		mockUserRepo.On("FindByEmail", userEntity.Email).Return(entity.User{}, errors.New("record not found")).Once()
-		mockUserRepo.On("Save", userEntity).Return(userEntity, nil).Once()
+		mockUserRepo.On("Save", userEntity2).Return(userEntity, nil).Once()
 
-		testUserUsecase := NewUserUsecase(mockUserRepo, nil)
+		testUserUsecase := NewUserUsecase(mockUserRepo, validator.New())
 		res, err := testUserUsecase.Register(registerInfo)
 
 		assert.NoError(t, err)
