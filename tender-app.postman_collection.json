@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "75176ae5-c08a-4b3d-bf7f-ee86f881aa92",
+		"name": "Deal YC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17605122"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\": \"Lulu Arsylia\",\r\n    \"email\": \"luluarsylia@gmail.com\",\r\n    \"password\": \"Rahasia123\",\r\n    \"password_confirmation\": \"Rahasia123\",\r\n    \"profile_image_url\": \"https://www.image.png\",\r\n    \"gender\": \"males\",\r\n    \"details\": \"details\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/users/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"luluarsylia@gmail.com\",\r\n    \"password\": \"Rahasia123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/users/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJlbWFpbCI6Imx1bHVhcnN5bGlhQGdtYWlsLmNvbSIsImV4cCI6MTY4NTk1MTE3NiwiaXNWZXJpZmllZCI6ZmFsc2UsInVzZXJJZCI6MX0.F5MbzrvvoDV5isOp51K3yyQtrB-ooC0mmczkGCSR7JY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\": \"Restu AR\",\r\n    \"profile_image_url\": \"https://image.image.png\",\r\n    \"details\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/users/update",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upgrade Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJlbWFpbCI6Imx1bHVhcnN5bGlhQGdtYWlsLmNvbSIsImV4cCI6MTY4NTk1MTE3NiwiaXNWZXJpZmllZCI6ZmFsc2UsInVzZXJJZCI6MX0.F5MbzrvvoDV5isOp51K3yyQtrB-ooC0mmczkGCSR7JY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/users/upgrade",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"upgrade"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Interaction",
+			"item": [
+				{
+					"name": "Show People",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJlbWFpbCI6InJlc3R1YXJhY2htYW5AZ21haWwuY29tIiwiZXhwIjoxNjg1ODE4NjIwLCJpc1ZlcmlmaWVkIjpmYWxzZSwidXNlcklkIjoxfQ.VnxR5CPpNCDgL_qTka9U1YkGKXo8cHxpp3VgPxu5_BI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/interactions/show-people",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"interactions",
+								"show-people"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Swipe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJlbWFpbCI6InJlc3R1YXJhY2htYW5AZ21haWwuY29tIiwiZXhwIjoxNjg1ODE4NjIwLCJpc1ZlcmlmaWVkIjpmYWxzZSwidXNlcklkIjoxfQ.VnxR5CPpNCDgL_qTka9U1YkGKXo8cHxpp3VgPxu5_BI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":2,\r\n\t\"interaction_type\":\"Like\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/interactions/swipe",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"interactions",
+								"swipe"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
