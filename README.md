@@ -1,7 +1,8 @@
 # tender-app
 
 ## Structure of this service
-![Untitled Diagram-Page-3(1)](https://github.com/restuarachman/tender-app/assets/57408456/300faf7f-9ad9-4811-a865-1a560bfc626f)
+![Untitled Diagram-Page-3(1)](https://github.com/restuarachman/tender-app/assets/57408456/dcb13f3f-99f0-4839-b1ef-9a83dd609eea)
+
 
 ## How to run the service
 
