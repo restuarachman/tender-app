@@ -22,9 +22,10 @@ func NewUserHandler(e *echo.Echo, us user.UserUsecase, JWTSecret string) {
 		JWTSecret:   JWTSecret,
 	}
 
-	e.POST("/api/v1/register", handler.Register)
-	e.POST("/api/v1/login", handler.Login)
-	e.PUT("/api/v1/update", handler.Update, middleware.JWT([]byte(JWTSecret)))
+	e.POST("/api/v1/users/register", handler.Register)
+	e.POST("/api/v1/users/login", handler.Login)
+	e.PUT("/api/v1/users/update", handler.Update, middleware.JWT([]byte(JWTSecret)))
+	e.GET("/api/v1/users/upgrade", handler.UpgradeAccount, middleware.JWT([]byte(JWTSecret)))
 }
 
 func (u *UserHandler) Login(c echo.Context) error {
@@ -64,4 +65,15 @@ func (u *UserHandler) Update(c echo.Context) error {
 	}
 
 	return response.SuccessResponse(c, userReponse)
+}
+
+func (u *UserHandler) UpgradeAccount(c echo.Context) error {
+	userID, _, _ := _midl.ExtractTokenUser(c)
+
+	message, err := u.userUsecase.UpgradeAccount(uint(userID))
+	if err != nil {
+		return response.ErrorResponse(c, err)
+	}
+
+	return response.SuccessResponse(c, message)
 }

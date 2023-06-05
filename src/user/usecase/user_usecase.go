@@ -49,12 +49,12 @@ func (uu *userUsecase) Register(registerInfo userDTO.UserRegisterRequest) (userD
 		Details:         registerInfo.Details,
 	}
 
-	_, err = uu.userRepo.Save(userEntity)
+	userDB, err := uu.userRepo.Save(userEntity)
 	if err != nil {
 		return userDTO.UserRegisterResponse{}, err
 	}
 
-	token, err := middleware.JWTCreateToken(int(userEntity.ID), userEntity.Email, false)
+	token, err := middleware.JWTCreateToken(int(userDB.ID), userDB.Email, userDB.IsVerified)
 	if err != nil {
 		return userDTO.UserRegisterResponse{}, err
 	}
@@ -123,6 +123,29 @@ func (uu *userUsecase) Update(updateInfo userDTO.UserUpdateRequest, userID uint)
 	}
 
 	return userUpdateDTO, nil
+}
+
+func (uu *userUsecase) UpgradeAccount(userID uint) (string, error) {
+	user, err := uu.userRepo.FindById(userID)
+	if err != nil {
+		return "", utils.ErrInternalServerError
+	}
+	if user.ID == 0 {
+		return "", utils.ErrNotFound
+	}
+
+	if user.IsVerified {
+		return "", utils.ErrBadParamInput
+	}
+
+	user.IsVerified = true
+
+	_, err = uu.userRepo.Update(user, userID)
+	if err != nil {
+		return "", err
+	}
+
+	return "Account upgraded successfully", nil
 }
 
 func hashAndSalt(pwd []byte) string {
